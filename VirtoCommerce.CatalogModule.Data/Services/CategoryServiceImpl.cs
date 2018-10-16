@@ -30,6 +30,8 @@ namespace VirtoCommerce.CatalogModule.Data.Services
         private readonly ICatalogService _catalogService;
         private readonly IEventPublisher _eventPublisher;
 
+        protected TelemetryClient Telemetry = new TelemetryClient();
+
         public CategoryServiceImpl(Func<ICatalogRepository> catalogRepositoryFactory, ICommerceService commerceService, IOutlineService outlineService, ICatalogService catalogService, ICacheManager<object> cacheManager, AbstractValidator<IHasProperties> hasPropertyValidator,
                                    IEventPublisher eventPublisher)
         {
@@ -230,6 +232,7 @@ namespace VirtoCommerce.CatalogModule.Data.Services
         {
             return _cacheManager.Get($"AllCategories-{catalogId}", CatalogConstants.CacheRegion, () =>
             {
+                LogTrace($"Preloading categories for catalogId '{catalogId}'");
                 CategoryEntity[] entities;
                 using (var repository = _repositoryFactory())
                 {
@@ -252,6 +255,11 @@ namespace VirtoCommerce.CatalogModule.Data.Services
 
                 return result;
             });
+        }
+
+        protected virtual void LogTrace(string message)
+        {
+            // No-op.
         }
 
         protected virtual void LoadDependencies(IEnumerable<Category> categories, Dictionary<string, Category> preloadedCategoriesMap)
