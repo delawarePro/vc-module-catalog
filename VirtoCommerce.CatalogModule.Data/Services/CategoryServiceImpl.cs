@@ -30,8 +30,6 @@ namespace VirtoCommerce.CatalogModule.Data.Services
         private readonly ICatalogService _catalogService;
         private readonly IEventPublisher _eventPublisher;
 
-        protected TelemetryClient Telemetry = new TelemetryClient();
-
         public CategoryServiceImpl(Func<ICatalogRepository> catalogRepositoryFactory, ICommerceService commerceService, IOutlineService outlineService, ICatalogService catalogService, ICacheManager<object> cacheManager, AbstractValidator<IHasProperties> hasPropertyValidator,
                                    IEventPublisher eventPublisher)
         {
